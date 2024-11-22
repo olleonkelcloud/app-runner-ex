@@ -1,5 +1,6 @@
 from email.headerregistry import ContentDispositionHeader
 from imaplib import Response_code
+from os import confstr_names
 
 from flask import Flask, jsonify
 import requests
@@ -31,5 +32,13 @@ def test():
         return jsonify({
             "greeting": f"{con}"
     })
+
+@app.route('/hellohello')
+def hellohello():
+    return jsonify({
+        "greeting": "hellohello"
+    })
+    
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
