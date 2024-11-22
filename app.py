@@ -1,4 +1,8 @@
+from email.headerregistry import ContentDispositionHeader
+from imaplib import Response_code
+
 from flask import Flask, jsonify
+import requests
 
 app = Flask(__name__)
 
@@ -15,5 +19,17 @@ def hello():
         "greeting": "Hello, AWS App Runner!"
     })
 
+
+@app.route('/test')
+def test():
+    try:
+        res = requests.get('https://www.google.de')
+        con = res.content
+    except Exception as e:
+        con = e
+    finally:
+        return jsonify({
+            "greeting": f"{con}"
+    })
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
