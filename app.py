@@ -1,9 +1,6 @@
-from email.headerregistry import ContentDispositionHeader
-from imaplib import Response_code
-from os import confstr_names
-
+from urllib.request import urlopen
+from urllib.error import URLError
 from flask import Flask, jsonify
-import requests
 
 app = Flask(__name__)
 
@@ -21,17 +18,19 @@ def hello():
     })
 
 
+
+
 @app.route('/test')
 def test():
     try:
-        res = requests.get('https://www.google.de')
-        con = res.content
-    except Exception as e:
-        con = e
+        with urlopen('https://www.google.de') as response:
+            content = response.read()
+    except URLError as e:
+        content = str(e)
     finally:
         return jsonify({
-            "greeting": f"{con}"
-    })
+            "greeting": f"{content}"
+        })
 
 @app.route('/hellohello')
 def hellohello():
